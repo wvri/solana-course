@@ -1,0 +1,9 @@
+# Приватные ключи кошельков: НИКОГДА не загружать
+id.json
+*-keypair.json
+*.keypair
+wallet*.json
+.env
+node_modules/
+target/
+.DS_Store

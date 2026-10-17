@@ -1,0 +1,10 @@
+create alice 5000
+create bob 1000
+balance alice
+transfer alice bob 1500
+transfer bob alice 99999
+balance carol
+create alice 1
+transfer alice bob abc
+list
+exit
