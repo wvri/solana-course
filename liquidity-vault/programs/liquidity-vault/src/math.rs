@@ -15,6 +15,13 @@ pub fn shares_for_deposit(assets: u64, total_assets: u64, total_shares: u64) -> 
     u64::try_from(numerator / denominator).ok()
 }
 
+/// Сколько актива вернуть за сжигание `shares` (округление вниз).
+pub fn assets_for_shares(shares: u64, total_assets: u64, total_shares: u64) -> Option<u64> {
+    let numerator = (shares as u128).checked_mul(total_assets as u128 + VIRTUAL_ASSETS)?;
+    let denominator = total_shares as u128 + VIRTUAL_SHARES;
+    u64::try_from(numerator / denominator).ok()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -46,5 +53,28 @@ mod tests {
     #[test]
     fn no_overflow_on_large_values() {
         assert!(shares_for_deposit(u64::MAX, u64::MAX, u64::MAX).is_some());
+    }
+
+    #[test]
+    fn withdraw_all_returns_everything() {
+        assert_eq!(assets_for_shares(150, 150, 150), Some(150));
+    }
+
+    #[test]
+    fn withdraw_with_profit() {
+        // 300 активов на 150 долей: 50 долей ≈ 100 активов (вниз)
+        assert_eq!(assets_for_shares(50, 300, 150), Some(99));
+    }
+
+    #[test]
+    fn deposit_then_withdraw_never_profits() {
+        // круговая операция не должна давать прибыль (защита от округления)
+        for (a, s) in [(1_000u64, 1_000u64), (1_337, 999), (10_000_007, 3)] {
+            for amount in [1u64, 7, 1_000, 123_456] {
+                let sh = shares_for_deposit(amount, a, s).unwrap();
+                let back = assets_for_shares(sh, a + amount, s + sh).unwrap();
+                assert!(back <= amount, "a={a} s={s} amount={amount} back={back}");
+            }
+        }
     }
 }

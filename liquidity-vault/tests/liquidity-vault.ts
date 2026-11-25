@@ -55,6 +55,24 @@ describe("liquidity-vault", () => {
   const balance = async (ata: PublicKey) =>
     Number((await getAccount(provider.connection, ata)).amount);
 
+  const withdraw = (shares: number, minAssets = 0) =>
+    program.methods
+      .withdraw(new BN(shares), new BN(minAssets))
+      .accountsPartial({
+        user: user.publicKey,
+        config,
+        vaultAuthority,
+        assetMint,
+        shareMint,
+        vaultAsset,
+        userAssetAccount: userAssetAta,
+        userShareAccount: userShareAta,
+        userAccount,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .signers([user])
+      .rpc();
+
   const deposit = (amount: number, minShares = 0) =>
     program.methods
       .deposit(new BN(amount), new BN(minShares))
@@ -181,5 +199,52 @@ describe("liquidity-vault", () => {
       .updateSettings(false, new BN(0))
       .accountsPartial({ admin: admin.publicKey, config })
       .rpc();
+  });
+
+  // ───────────── Неделя 10 ─────────────
+
+  it("withdraw: сжигает доли и возвращает актив через CPI с подписью PDA", async () => {
+    const assetBefore = await balance(userAssetAta);
+    await withdraw(50 * ONE);
+
+    assert.equal(await balance(userShareAta), 100 * ONE);
+    assert.equal(await balance(vaultAsset), 100 * ONE);
+    assert.equal(await balance(userAssetAta), assetBefore + 50 * ONE);
+    const cfg = await program.account.vaultConfig.fetch(config);
+    assert.equal(cfg.totalShares.toNumber(), 100 * ONE);
+    const ua = await program.account.userAccount.fetch(userAccount);
+    assert.equal(ua.sharesBurned.toNumber(), 50 * ONE);
+  });
+
+  it("withdraw: нельзя сжечь больше долей, чем есть", async () => {
+    try {
+      await withdraw(101 * ONE);
+      assert.fail("должно было упасть");
+    } catch (e: any) {
+      assert.include(String(e), "InsufficientShares");
+    }
+  });
+
+  it("withdraw: min_assets_out защищает от проскальзывания", async () => {
+    try {
+      await withdraw(10 * ONE, 11 * ONE);
+      assert.fail("должно было упасть");
+    } catch (e: any) {
+      assert.include(String(e), "SlippageExceeded");
+    }
+  });
+
+  it("withdraw: работает даже на паузе и выводит всё", async () => {
+    await program.methods
+      .updateSettings(true, new BN(0))
+      .accountsPartial({ admin: admin.publicKey, config })
+      .rpc();
+    await withdraw(100 * ONE);
+
+    assert.equal(await balance(userShareAta), 0);
+    assert.equal(await balance(vaultAsset), 0);
+    const cfg = await program.account.vaultConfig.fetch(config);
+    assert.equal(cfg.totalAssets.toNumber(), 0);
+    assert.equal(cfg.totalShares.toNumber(), 0);
   });
 });

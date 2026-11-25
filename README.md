@@ -14,6 +14,7 @@
 | 6 | Accounts, PDAs и архитектура программ | РО2 | [week6](week6/README.md) | [программа](https://explorer.solana.com/address/4kdXLeUUvnWZJqUkYAeKGRvF9LkkR1gvmjd2Mug58D8m?cluster=devnet) |
 | 8 | РК1 · BUILD SPRINT: каркас Liquidity Vault | РО2 | [week8](week8/README.md) · [РК1](week8/rk1.md) | после деплоя |
 | 9 | Vault: депозит и share-токены | РО2 | [week9](week9/README.md) | после деплоя |
+| 10 | CPI и вывод из vault | РО3 | [week10](week10/README.md) | после деплоя |
 
 ## Структура
 

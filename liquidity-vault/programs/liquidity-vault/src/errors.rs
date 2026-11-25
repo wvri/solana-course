@@ -18,4 +18,8 @@ pub enum VaultError {
     SlippageExceeded,
     #[msg("Signer is not allowed to use this account")]
     Unauthorized,
+    #[msg("Not enough share tokens")]
+    InsufficientShares,
+    #[msg("Not enough idle liquidity in the vault, assets are deployed to the pool")]
+    InsufficientIdleLiquidity,
 }

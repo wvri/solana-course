@@ -32,3 +32,13 @@ pub struct Deposited {
     pub total_assets: u64,
     pub total_shares: u64,
 }
+
+#[event]
+pub struct Withdrawn {
+    pub config: Pubkey,
+    pub user: Pubkey,
+    pub shares: u64,
+    pub amount: u64,
+    pub total_assets: u64,
+    pub total_shares: u64,
+}

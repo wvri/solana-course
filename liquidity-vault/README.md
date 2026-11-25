@@ -6,6 +6,7 @@
 flowchart LR
     U[Пользователь] -- deposit --> V[(vault_asset)]
     V -- mint shares --> U
+    U -- withdraw: burn shares --> V
     subgraph Program[liquidity_vault]
         C[VaultConfig PDA]
         A[vault_authority PDA]
@@ -32,6 +33,7 @@ flowchart LR
 | 8 | `init_user()` | пользователь |
 | 8 | `update_settings(paused, deposit_cap)` | admin |
 | 9 | `deposit(amount, min_shares_out)` | пользователь |
+| 10 | `withdraw(shares, min_assets_out)` | пользователь |
 
 ## Запуск
 

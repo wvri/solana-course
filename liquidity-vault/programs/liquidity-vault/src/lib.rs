@@ -51,4 +51,11 @@ pub mod liquidity_vault {
     pub fn deposit(ctx: Context<Deposit>, amount: u64, min_shares_out: u64) -> Result<()> {
         instructions::deposit::deposit_handler(ctx, amount, min_shares_out)
     }
+
+    // ───────────── Неделя 10: вывод ─────────────
+
+    /// Сжигает `shares` и возвращает пользователю его долю актива (CPI с подписью PDA).
+    pub fn withdraw(ctx: Context<Withdraw>, shares: u64, min_assets_out: u64) -> Result<()> {
+        instructions::withdraw::withdraw_handler(ctx, shares, min_assets_out)
+    }
 }
