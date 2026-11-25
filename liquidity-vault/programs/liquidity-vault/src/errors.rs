@@ -24,4 +24,6 @@ pub enum VaultError {
     InsufficientIdleLiquidity,
     #[msg("Pool does not trade the vault asset against the given pair mint")]
     InvalidPool,
+    #[msg("min_amount_out must be set (swap without slippage protection is not allowed)")]
+    SlippageNotSet,
 }

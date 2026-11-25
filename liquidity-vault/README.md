@@ -37,6 +37,7 @@ flowchart LR
 | 9 | `deposit(amount, min_shares_out)` | пользователь |
 | 10 | `withdraw(shares, min_assets_out)` | пользователь |
 | 11 | `set_strategy()` — привязка к CLMM-пулу Raydium | admin |
+| 12 | `swap(amount_in, min_amount_out, sqrt_price_limit_x64, asset_to_pair)` — CPI `swap_v2` | admin |
 
 ## Запуск
 

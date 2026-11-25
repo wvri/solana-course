@@ -66,4 +66,23 @@ pub mod liquidity_vault {
     pub fn set_strategy(ctx: Context<SetStrategy>) -> Result<()> {
         instructions::set_strategy::set_strategy_handler(ctx)
     }
+
+    // ───────────── Неделя 12: swap через Raydium ─────────────
+
+    /// Обменивает токены vault в CLMM-пуле Raydium с ограничением `min_amount_out`.
+    pub fn swap<'info>(
+        ctx: Context<'info, VaultSwap<'info>>,
+        amount_in: u64,
+        min_amount_out: u64,
+        sqrt_price_limit_x64: u128,
+        asset_to_pair: bool,
+    ) -> Result<()> {
+        instructions::swap::swap_handler(
+            ctx,
+            amount_in,
+            min_amount_out,
+            sqrt_price_limit_x64,
+            asset_to_pair,
+        )
+    }
 }

@@ -16,6 +16,7 @@
 | 9 | Vault: депозит и share-токены | РО2 | [week9](week9/README.md) | после деплоя |
 | 10 | CPI и вывод из vault | РО3 | [week10](week10/README.md) | после деплоя |
 | 11 | AMM и концентрированная ликвидность (Raydium CLMM) | РО3 | [week11](week11/README.md) | после запуска скриптов |
+| 12 | Swap через Raydium | РО3 | [week12](week12/README.md) | после запуска скриптов |
 
 ## Структура
 

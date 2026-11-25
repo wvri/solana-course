@@ -51,3 +51,13 @@ pub struct StrategySet {
     pub asset_is_token_0: bool,
     pub tick_spacing: u16,
 }
+
+#[event]
+pub struct Swapped {
+    pub config: Pubkey,
+    pub pool_state: Pubkey,
+    pub asset_to_pair: bool,
+    pub amount_in: u64,
+    pub amount_out: u64,
+    pub min_amount_out: u64,
+}

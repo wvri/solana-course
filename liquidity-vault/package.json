@@ -8,7 +8,8 @@
     "w11:tokens": "ts-node scripts/01-create-tokens.ts",
     "w11:pool": "ts-node scripts/02-create-clmm-pool.ts",
     "w11:seed": "ts-node scripts/03-seed-liquidity.ts",
-    "w11:vault": "ts-node scripts/04-init-vault.ts"
+    "w11:vault": "ts-node scripts/04-init-vault.ts",
+    "w12:swap": "ts-node scripts/05-vault-swap.ts"
   },
   "dependencies": {
     "@anchor-lang/core": "^1.0.2",
