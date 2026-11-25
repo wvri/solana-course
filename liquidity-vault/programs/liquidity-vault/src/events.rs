@@ -22,3 +22,13 @@ pub struct VaultSettingsUpdated {
     pub paused: bool,
     pub deposit_cap: u64,
 }
+
+#[event]
+pub struct Deposited {
+    pub config: Pubkey,
+    pub user: Pubkey,
+    pub amount: u64,
+    pub shares: u64,
+    pub total_assets: u64,
+    pub total_shares: u64,
+}

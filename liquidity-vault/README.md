@@ -31,6 +31,7 @@ flowchart LR
 | 8 | `initialize_vault(deposit_cap, authority_lamports)` | admin |
 | 8 | `init_user()` | пользователь |
 | 8 | `update_settings(paused, deposit_cap)` | admin |
+| 9 | `deposit(amount, min_shares_out)` | пользователь |
 
 ## Запуск
 

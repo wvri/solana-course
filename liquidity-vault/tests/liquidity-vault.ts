@@ -5,6 +5,8 @@ import {
   TOKEN_PROGRAM_ID,
   createMint,
   createAssociatedTokenAccount,
+  getAccount,
+  getAssociatedTokenAddressSync,
   mintTo,
 } from "@solana/spl-token";
 import { assert } from "chai";
@@ -27,6 +29,7 @@ describe("liquidity-vault", () => {
   let vaultAsset: PublicKey;
   let userAccount: PublicKey;
   let userAssetAta: PublicKey;
+  let userShareAta: PublicKey;
 
   const pda = (seeds: (Buffer | Uint8Array)[]) =>
     PublicKey.findProgramAddressSync(seeds, program.programId)[0];
@@ -46,7 +49,29 @@ describe("liquidity-vault", () => {
     shareMint = pda([Buffer.from("shares"), config.toBuffer()]);
     vaultAsset = pda([Buffer.from("vault_asset"), config.toBuffer()]);
     userAccount = pda([Buffer.from("user"), config.toBuffer(), user.publicKey.toBuffer()]);
+    userShareAta = getAssociatedTokenAddressSync(shareMint, user.publicKey);
   });
+
+  const balance = async (ata: PublicKey) =>
+    Number((await getAccount(provider.connection, ata)).amount);
+
+  const deposit = (amount: number, minShares = 0) =>
+    program.methods
+      .deposit(new BN(amount), new BN(minShares))
+      .accountsPartial({
+        user: user.publicKey,
+        config,
+        vaultAuthority,
+        assetMint,
+        shareMint,
+        vaultAsset,
+        userAssetAccount: userAssetAta,
+        userShareAccount: userShareAta,
+        userAccount,
+        tokenProgram: TOKEN_PROGRAM_ID,
+      })
+      .signers([user])
+      .rpc();
 
   // ───────────── Неделя 8 ─────────────
 
@@ -94,5 +119,67 @@ describe("liquidity-vault", () => {
     } catch (e: any) {
       assert.include(String(e), "ConstraintHasOne");
     }
+  });
+
+  // ───────────── Неделя 9 ─────────────
+
+  it("deposit: первый депозит выпускает доли 1:1", async () => {
+    await deposit(100 * ONE);
+
+    assert.equal(await balance(userShareAta), 100 * ONE);
+    assert.equal(await balance(vaultAsset), 100 * ONE);
+    const cfg = await program.account.vaultConfig.fetch(config);
+    assert.equal(cfg.totalAssets.toNumber(), 100 * ONE);
+    assert.equal(cfg.totalShares.toNumber(), 100 * ONE);
+    const ua = await program.account.userAccount.fetch(userAccount);
+    assert.equal(ua.totalDeposited.toNumber(), 100 * ONE);
+  });
+
+  it("deposit: повторный депозит пропорционален", async () => {
+    await deposit(50 * ONE);
+    assert.equal(await balance(userShareAta), 150 * ONE);
+  });
+
+  it("deposit: min_shares_out защищает от проскальзывания", async () => {
+    try {
+      await deposit(10 * ONE, 11 * ONE);
+      assert.fail("должно было упасть");
+    } catch (e: any) {
+      assert.include(String(e), "SlippageExceeded");
+    }
+  });
+
+  it("deposit: пауза блокирует депозиты", async () => {
+    await program.methods
+      .updateSettings(true, new BN(0))
+      .accountsPartial({ admin: admin.publicKey, config })
+      .rpc();
+    try {
+      await deposit(1 * ONE);
+      assert.fail("должно было упасть");
+    } catch (e: any) {
+      assert.include(String(e), "VaultPaused");
+    }
+    await program.methods
+      .updateSettings(false, new BN(0))
+      .accountsPartial({ admin: admin.publicKey, config })
+      .rpc();
+  });
+
+  it("deposit: лимит депозитов", async () => {
+    await program.methods
+      .updateSettings(false, new BN(200 * ONE))
+      .accountsPartial({ admin: admin.publicKey, config })
+      .rpc();
+    try {
+      await deposit(60 * ONE); // 150 + 60 > 200
+      assert.fail("должно было упасть");
+    } catch (e: any) {
+      assert.include(String(e), "DepositCapExceeded");
+    }
+    await program.methods
+      .updateSettings(false, new BN(0))
+      .accountsPartial({ admin: admin.publicKey, config })
+      .rpc();
   });
 });

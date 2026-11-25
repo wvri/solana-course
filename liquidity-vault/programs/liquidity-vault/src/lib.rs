@@ -9,6 +9,7 @@ pub mod constants;
 pub mod errors;
 pub mod events;
 pub mod instructions;
+pub mod math;
 pub mod state;
 
 pub use instructions::*;
@@ -42,5 +43,12 @@ pub mod liquidity_vault {
     /// Пауза и лимит депозитов (только admin).
     pub fn update_settings(ctx: Context<AdminOnly>, paused: bool, deposit_cap: u64) -> Result<()> {
         instructions::admin::update_settings_handler(ctx, paused, deposit_cap)
+    }
+
+    // ───────────── Неделя 9: депозит ─────────────
+
+    /// Вносит `amount` актива и выпускает share-токены пользователю.
+    pub fn deposit(ctx: Context<Deposit>, amount: u64, min_shares_out: u64) -> Result<()> {
+        instructions::deposit::deposit_handler(ctx, amount, min_shares_out)
     }
 }
