@@ -61,4 +61,11 @@ pub struct Strategy {
     pub tick_spacing: u16,
     pub bump: u8,
     pub vault_pair_bump: u8,
+    // ── нед. 13: активная позиция в CLMM ──
+    /// Есть ли открытая позиция.
+    pub has_position: bool,
+    /// NFT позиции Raydium (Token-2022), владелец — vault_authority.
+    pub position_nft_mint: Pubkey,
+    pub tick_lower: i32,
+    pub tick_upper: i32,
 }

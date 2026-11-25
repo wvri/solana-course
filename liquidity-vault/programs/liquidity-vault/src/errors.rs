@@ -26,4 +26,14 @@ pub enum VaultError {
     InvalidPool,
     #[msg("min_amount_out must be set (swap without slippage protection is not allowed)")]
     SlippageNotSet,
+    #[msg("Vault already has an open position")]
+    PositionAlreadyOpen,
+    #[msg("Vault has no open position")]
+    NoPosition,
+    #[msg("Invalid tick range")]
+    InvalidTickRange,
+    #[msg("Price is still inside the position range, rebalance is not needed")]
+    PositionInRange,
+    #[msg("Reported total assets changed too much in one step")]
+    ReportOutOfBounds,
 }

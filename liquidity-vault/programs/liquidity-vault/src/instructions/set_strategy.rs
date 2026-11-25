@@ -85,6 +85,10 @@ pub fn set_strategy_handler(ctx: Context<SetStrategy>) -> Result<()> {
     strategy.tick_spacing = tick_spacing;
     strategy.bump = ctx.bumps.strategy;
     strategy.vault_pair_bump = ctx.bumps.vault_pair;
+    strategy.has_position = false;
+    strategy.position_nft_mint = Pubkey::default();
+    strategy.tick_lower = 0;
+    strategy.tick_upper = 0;
 
     emit!(StrategySet {
         config: strategy.config,

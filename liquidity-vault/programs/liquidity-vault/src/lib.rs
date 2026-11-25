@@ -85,4 +85,67 @@ pub mod liquidity_vault {
             asset_to_pair,
         )
     }
+
+    // ───────────── Неделя 13: позиция в CLMM ─────────────
+
+    /// Открывает позицию vault в диапазоне [tick_lower, tick_upper).
+    #[allow(clippy::too_many_arguments)]
+    pub fn open_position<'info>(
+        ctx: Context<'info, OpenVaultPosition<'info>>,
+        tick_lower: i32,
+        tick_upper: i32,
+        tick_array_lower_start_index: i32,
+        tick_array_upper_start_index: i32,
+        liquidity: u128,
+        amount_0_max: u64,
+        amount_1_max: u64,
+        base_flag: Option<bool>,
+    ) -> Result<()> {
+        instructions::position::open_position_handler(
+            ctx,
+            tick_lower,
+            tick_upper,
+            tick_array_lower_start_index,
+            tick_array_upper_start_index,
+            liquidity,
+            amount_0_max,
+            amount_1_max,
+            base_flag,
+        )
+    }
+
+    /// Собирает комиссии позиции в vault.
+    pub fn collect_fees<'info>(ctx: Context<'info, ManagePosition<'info>>) -> Result<()> {
+        instructions::position::collect_fees_handler(ctx)
+    }
+
+    /// Выводит ликвидность из позиции обратно в vault.
+    pub fn decrease_liquidity<'info>(
+        ctx: Context<'info, ManagePosition<'info>>,
+        liquidity: u128,
+        amount_0_min: u64,
+        amount_1_min: u64,
+    ) -> Result<()> {
+        instructions::position::decrease_liquidity_handler(
+            ctx,
+            liquidity,
+            amount_0_min,
+            amount_1_min,
+        )
+    }
+
+    /// Закрывает пустую позицию.
+    pub fn close_position(ctx: Context<CloseVaultPosition>) -> Result<()> {
+        instructions::position::close_position_handler(ctx)
+    }
+
+    /// Проверяет, вышла ли цена из диапазона позиции.
+    pub fn check_range(ctx: Context<CheckRange>, require_out_of_range: bool) -> Result<()> {
+        instructions::position::check_range_handler(ctx, require_out_of_range)
+    }
+
+    /// Переоценка total_assets (не более ±20% за вызов).
+    pub fn report_assets(ctx: Context<AdminOnly>, new_total_assets: u64) -> Result<()> {
+        instructions::admin::report_assets_handler(ctx, new_total_assets)
+    }
 }

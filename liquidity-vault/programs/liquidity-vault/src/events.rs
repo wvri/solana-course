@@ -61,3 +61,52 @@ pub struct Swapped {
     pub amount_out: u64,
     pub min_amount_out: u64,
 }
+
+#[event]
+pub struct PositionOpened {
+    pub config: Pubkey,
+    pub position_nft_mint: Pubkey,
+    pub tick_lower: i32,
+    pub tick_upper: i32,
+    pub asset_spent: u64,
+    pub pair_spent: u64,
+}
+
+#[event]
+pub struct LiquidityDecreased {
+    pub config: Pubkey,
+    pub position_nft_mint: Pubkey,
+    pub liquidity: u128,
+    pub asset_received: u64,
+    pub pair_received: u64,
+}
+
+#[event]
+pub struct FeesCollected {
+    pub config: Pubkey,
+    pub position_nft_mint: Pubkey,
+    pub asset_fees: u64,
+    pub pair_fees: u64,
+}
+
+#[event]
+pub struct PositionClosed {
+    pub config: Pubkey,
+    pub position_nft_mint: Pubkey,
+}
+
+#[event]
+pub struct RangeChecked {
+    pub config: Pubkey,
+    pub tick_current: i32,
+    pub tick_lower: i32,
+    pub tick_upper: i32,
+    pub in_range: bool,
+}
+
+#[event]
+pub struct AssetsReported {
+    pub config: Pubkey,
+    pub old_total_assets: u64,
+    pub new_total_assets: u64,
+}

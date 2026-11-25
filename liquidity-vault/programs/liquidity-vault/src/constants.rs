@@ -15,3 +15,6 @@ pub const VAULT_ASSET_SEED: &[u8] = b"vault_asset";
 pub const USER_SEED: &[u8] = b"user";
 pub const STRATEGY_SEED: &[u8] = b"strategy";
 pub const VAULT_PAIR_SEED: &[u8] = b"vault_pair";
+
+/// Максимальное изменение total_assets за один report_assets: 20%.
+pub const MAX_REPORT_CHANGE_BPS: u64 = 2_000;

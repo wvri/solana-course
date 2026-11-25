@@ -17,6 +17,7 @@
 | 10 | CPI и вывод из vault | РО3 | [week10](week10/README.md) | после деплоя |
 | 11 | AMM и концентрированная ликвидность (Raydium CLMM) | РО3 | [week11](week11/README.md) | после запуска скриптов |
 | 12 | Swap через Raydium | РО3 | [week12](week12/README.md) | после запуска скриптов |
+| 13 | Позиция в CLMM-пуле Raydium | РО3 | [week13](week13/README.md) | после запуска скриптов |
 
 ## Структура
 

@@ -9,7 +9,11 @@
     "w11:pool": "ts-node scripts/02-create-clmm-pool.ts",
     "w11:seed": "ts-node scripts/03-seed-liquidity.ts",
     "w11:vault": "ts-node scripts/04-init-vault.ts",
-    "w12:swap": "ts-node scripts/05-vault-swap.ts"
+    "w12:swap": "ts-node scripts/05-vault-swap.ts",
+    "w13:open": "ts-node scripts/06-open-position.ts",
+    "w13:fees": "ts-node scripts/07-collect-fees.ts",
+    "w13:rebalance": "ts-node scripts/08-rebalance.ts",
+    "w13:report": "ts-node scripts/09-report-assets.ts"
   },
   "dependencies": {
     "@anchor-lang/core": "^1.0.2",

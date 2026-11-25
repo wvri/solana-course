@@ -22,6 +22,17 @@ pub fn assets_for_shares(shares: u64, total_assets: u64, total_shares: u64) -> O
     u64::try_from(numerator / denominator).ok()
 }
 
+/// Позиция CLMM активна (зарабатывает комиссии), если tick_lower <= tick < tick_upper.
+pub fn tick_in_range(tick_current: i32, tick_lower: i32, tick_upper: i32) -> bool {
+    tick_lower <= tick_current && tick_current < tick_upper
+}
+
+/// Изменение `old → new` не превышает `max_bps` (1 bps = 0.01%).
+pub fn within_bps(old: u64, new: u64, max_bps: u64) -> bool {
+    let diff = (old as i128 - new as i128).unsigned_abs();
+    diff * 10_000 <= old as u128 * max_bps as u128
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -76,5 +87,22 @@ mod tests {
                 assert!(back <= amount, "a={a} s={s} amount={amount} back={back}");
             }
         }
+    }
+
+    #[test]
+    fn range_bounds() {
+        assert!(tick_in_range(0, -60, 60));
+        assert!(tick_in_range(-60, -60, 60)); // нижняя граница включена
+        assert!(!tick_in_range(60, -60, 60)); // верхняя — нет
+        assert!(!tick_in_range(-61, -60, 60));
+    }
+
+    #[test]
+    fn report_bounds() {
+        assert!(within_bps(1_000, 1_200, 2_000)); // +20% ок
+        assert!(within_bps(1_000, 800, 2_000)); // −20% ок
+        assert!(!within_bps(1_000, 1_201, 2_000));
+        assert!(!within_bps(1_000, 0, 2_000));
+        assert!(within_bps(0, 0, 2_000));
     }
 }

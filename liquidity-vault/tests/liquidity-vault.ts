@@ -247,4 +247,45 @@ describe("liquidity-vault", () => {
     assert.equal(cfg.totalAssets.toNumber(), 0);
     assert.equal(cfg.totalShares.toNumber(), 0);
   });
+
+  // ───────────── Неделя 13 (без Raydium) ─────────────
+
+  const report = (value: number) =>
+    program.methods
+      .reportAssets(new BN(value))
+      .accountsPartial({ admin: admin.publicKey, config })
+      .rpc();
+
+  it("report_assets: переоценка в пределах ±20%", async () => {
+    await program.methods
+      .updateSettings(false, new BN(0))
+      .accountsPartial({ admin: admin.publicKey, config })
+      .rpc();
+    await deposit(100 * ONE);
+    await report(110 * ONE); // +10% — допустимо
+    const cfg = await program.account.vaultConfig.fetch(config);
+    assert.equal(cfg.totalAssets.toNumber(), 110 * ONE);
+  });
+
+  it("report_assets: скачок больше 20% отклоняется", async () => {
+    try {
+      await report(200 * ONE);
+      assert.fail("должно было упасть");
+    } catch (e: any) {
+      assert.include(String(e), "ReportOutOfBounds");
+    }
+  });
+
+  it("withdraw: выдаётся только свободный остаток vault", async () => {
+    // по учёту vault стоит 110, а на vault_asset лежит 100 (остальное «в пуле»)
+    try {
+      await withdraw(100 * ONE);
+      assert.fail("должно было упасть");
+    } catch (e: any) {
+      assert.include(String(e), "InsufficientIdleLiquidity");
+    }
+    await report(100 * ONE);
+    await withdraw(100 * ONE);
+    assert.equal(await balance(vaultAsset), 0);
+  });
 });
