@@ -33,3 +33,13 @@ weekN/
 
 Код — Anchor-workspace [`liquidity-vault/`](liquidity-vault/README.md). Каждая неделя — отдельный коммит, отчёты лежат в `weekN/README.md`.
 
+### Коммиты по неделям
+
+| Неделя | Тема | Коммит |
+|---|---|---|
+| 8 | РК1 · каркас vault | [`3ada9df`](https://github.com/wvri/solana-course/commit/3ada9df946a3848bd3500d03c2359326b6da499a) |
+| 9 | депозит и share-токены | [`68612a4`](https://github.com/wvri/solana-course/commit/68612a49223f0f7ef95ee1d1fc137e2821a3e07d) |
+| 10 | CPI и вывод | [`aa87109`](https://github.com/wvri/solana-course/commit/aa8710960fbbffe4f30d4ebb4f026d86263e5157) |
+| 11 | Raydium CLMM: токены и пул | [`edeb7c3`](https://github.com/wvri/solana-course/commit/edeb7c3b361ec16029023b850bd6efd68e1cec0f) |
+| 12 | swap через Raydium | [`00f730c`](https://github.com/wvri/solana-course/commit/00f730c3cd686df523ce38faf83f5093efa702df) |
+| 13 | позиция в CLMM | [`c98c697`](https://github.com/wvri/solana-course/commit/c98c697bad2f2c1dad7f2194af74240492b866ee) |
