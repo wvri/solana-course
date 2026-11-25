@@ -22,4 +22,6 @@ pub enum VaultError {
     InsufficientShares,
     #[msg("Not enough idle liquidity in the vault, assets are deployed to the pool")]
     InsufficientIdleLiquidity,
+    #[msg("Pool does not trade the vault asset against the given pair mint")]
+    InvalidPool,
 }

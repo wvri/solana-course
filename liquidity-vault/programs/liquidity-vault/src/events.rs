@@ -42,3 +42,12 @@ pub struct Withdrawn {
     pub total_assets: u64,
     pub total_shares: u64,
 }
+
+#[event]
+pub struct StrategySet {
+    pub config: Pubkey,
+    pub pool_state: Pubkey,
+    pub pair_mint: Pubkey,
+    pub asset_is_token_0: bool,
+    pub tick_spacing: u16,
+}

@@ -15,6 +15,7 @@
 | 8 | РК1 · BUILD SPRINT: каркас Liquidity Vault | РО2 | [week8](week8/README.md) · [РК1](week8/rk1.md) | после деплоя |
 | 9 | Vault: депозит и share-токены | РО2 | [week9](week9/README.md) | после деплоя |
 | 10 | CPI и вывод из vault | РО3 | [week10](week10/README.md) | после деплоя |
+| 11 | AMM и концентрированная ликвидность (Raydium CLMM) | РО3 | [week11](week11/README.md) | после запуска скриптов |
 
 ## Структура
 

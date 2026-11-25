@@ -24,6 +24,8 @@ flowchart LR
 | `share_mint` | `["shares", config]` | mint share-токенов, `decimals` = decimals актива |
 | `vault_asset` | `["vault_asset", config]` | token account vault с депозитным активом |
 | `UserAccount` | `["user", config, owner]` | PDA пользователя: статистика депозитов/выводов |
+| `Strategy` | `["strategy", config]` | пул Raydium CLMM, второй mint пары, `asset_is_token_0` |
+| `vault_pair` | `["vault_pair", config]` | token account vault для второго токена пары |
 
 ## Инструкции
 
@@ -34,6 +36,7 @@ flowchart LR
 | 8 | `update_settings(paused, deposit_cap)` | admin |
 | 9 | `deposit(amount, min_shares_out)` | пользователь |
 | 10 | `withdraw(shares, min_assets_out)` | пользователь |
+| 11 | `set_strategy()` — привязка к CLMM-пулу Raydium | admin |
 
 ## Запуск
 
@@ -46,6 +49,8 @@ anchor build
 anchor keys sync      # подставит ваш Program ID в lib.rs и Anchor.toml
 anchor test           # поднимет локальный валидатор и прогонит tests/
 ```
+
+Скрипты devnet (`scripts/`, недели 11–13) используют Raydium SDK v2 и пишут адреса в `scripts/state.json`.
 
 Деплой в devnet:
 

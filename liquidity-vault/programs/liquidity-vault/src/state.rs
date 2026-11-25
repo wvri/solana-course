@@ -44,3 +44,21 @@ pub struct UserAccount {
     pub last_action_ts: i64,
     pub bump: u8,
 }
+
+/// Стратегия vault: к какому CLMM-пулу Raydium привязан vault (нед. 11).
+#[account]
+#[derive(InitSpace)]
+pub struct Strategy {
+    pub config: Pubkey,
+    /// Аккаунт пула Raydium CLMM (PoolState).
+    pub pool_state: Pubkey,
+    /// Второй токен пары (первый — `config.asset_mint`).
+    pub pair_mint: Pubkey,
+    /// Token account vault для второго токена.
+    pub vault_pair: Pubkey,
+    /// Порядок токенов в пуле: Raydium сортирует mint-ы, token_0 < token_1.
+    pub asset_is_token_0: bool,
+    pub tick_spacing: u16,
+    pub bump: u8,
+    pub vault_pair_bump: u8,
+}

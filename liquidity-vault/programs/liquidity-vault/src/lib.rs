@@ -1,7 +1,8 @@
 //! Liquidity Vault — сквозной проект курса (недели 8–13).
 //!
 //! Пользователи вносят токены в vault и получают share-токены (свою долю).
-//! Администратор размещает средства vault в CLMM-пуле Raydium.
+//! Администратор размещает средства vault в CLMM-пуле Raydium (devnet program
+//! `DRayAUgENGQBKVaX8owNhgzkEDyoHTGVEGHVJT1E9pfH`).
 
 use anchor_lang::prelude::*;
 
@@ -57,5 +58,12 @@ pub mod liquidity_vault {
     /// Сжигает `shares` и возвращает пользователю его долю актива (CPI с подписью PDA).
     pub fn withdraw(ctx: Context<Withdraw>, shares: u64, min_assets_out: u64) -> Result<()> {
         instructions::withdraw::withdraw_handler(ctx, shares, min_assets_out)
+    }
+
+    // ───────────── Неделя 11: Raydium CLMM ─────────────
+
+    /// Привязывает vault к CLMM-пулу Raydium и создаёт vault_pair.
+    pub fn set_strategy(ctx: Context<SetStrategy>) -> Result<()> {
+        instructions::set_strategy::set_strategy_handler(ctx)
     }
 }

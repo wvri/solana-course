@@ -9,13 +9,21 @@ crate-type = ["cdylib", "lib"]
 name = "liquidity_vault"
 
 [features]
-default = []
+# Raydium CLMM devnet program: DRayAUgENGQBKVaX8owNhgzkEDyoHTGVEGHVJT1E9pfH
+default = ["devnet"]
+devnet = ["raydium-clmm-cpi/devnet"]
 cpi = ["no-entrypoint"]
 no-entrypoint = []
 no-idl = []
 no-log-ix-name = []
-idl-build = ["anchor-lang/idl-build", "anchor-spl/idl-build"]
+idl-build = [
+    "anchor-lang/idl-build",
+    "anchor-spl/idl-build",
+    "raydium-clmm-cpi/idl-build",
+]
 
 [dependencies]
 anchor-lang = { version = "=1.0.2", features = ["init-if-needed"] }
-anchor-spl = "=1.0.2"
+anchor-spl = { version = "=1.0.2", features = ["memo"] }
+# CPI-адаптер Raydium CLMM (Anchor 1.0.2), зафиксирован на конкретном коммите
+raydium-clmm-cpi = { git = "https://github.com/raydium-io/raydium-cpi", package = "raydium-clmm-cpi", rev = "115df2779d53bacc7db9d0be2773a4b48a6d372b" }
