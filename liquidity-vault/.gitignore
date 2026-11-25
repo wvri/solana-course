@@ -1,0 +1,10 @@
+.anchor/
+target/
+test-ledger/
+node_modules/
+yarn.lock
+package-lock.json
+# ключи и локальные конфиги не коммитим
+*.json.key
+scripts/.env
+scripts/state.json

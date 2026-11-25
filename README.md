@@ -1,4 +1,4 @@
-# Solana Devnet: практические работы 1-6
+# Solana Devnet: практические работы 1-13
 
 **Автор:** Масимова Мариям, ИС (каз. отделение)
 **Сеть:** Solana Devnet
@@ -12,6 +12,7 @@
 | 4 | Первая Solana Program | РО2 | [week4](week4/README.md) | [программа](https://explorer.solana.com/address/8dwrHSrYF3deCsWiAp6so9FcvdmNBdJ3shbbWL58QQgD?cluster=devnet) |
 | 5 | Anchor Framework: Counter | РО2 | [week5](week5/README.md) | [программа](https://explorer.solana.com/address/2v92GpF5iXQi82UfN77LBPkWEQapt1Vc35JQu9s6LXfg?cluster=devnet) |
 | 6 | Accounts, PDAs и архитектура программ | РО2 | [week6](week6/README.md) | [программа](https://explorer.solana.com/address/4kdXLeUUvnWZJqUkYAeKGRvF9LkkR1gvmjd2Mug58D8m?cluster=devnet) |
+| 8 | РК1 · BUILD SPRINT: каркас Liquidity Vault | РО2 | [week8](week8/README.md) · [РК1](week8/rk1.md) | после деплоя |
 
 ## Структура
 
@@ -22,3 +23,8 @@ weekN/
 ├── client/          # клиентские скрипты (client.ts)
 └── screenshots/     # скриншоты Explorer и Playground
 ```
+
+## Сквозной проект: Liquidity Vault (недели 8–13)
+
+Код — Anchor-workspace [`liquidity-vault/`](liquidity-vault/README.md). Каждая неделя — отдельный коммит, отчёты лежат в `weekN/README.md`.
+
